@@ -14,3 +14,8 @@ generate key
 run migrations and seed database
 ```php artisan migrate --seed```
 
+### Add Nova
+* Download Nova from https://nova.laravel.com
+* Copy Nova folder into the employee-manger directory
+
+

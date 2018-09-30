@@ -62,12 +62,11 @@ class Employee extends Resource
 
             Date::make('Date of Birth', 'dob')->format('M/D/Y')->sortable(),
 
-            Text::make('Age', function(){
+            Text::make('Age', 'dob')->resolveUsing(function($dob){
 
-                return optional($this->dob)
-                    ->diffInYears(now());
+                return $dob->diffInYears(now());
 
-            }),
+            })->hideWhenUpdating()->hideWhenCreating(),
 
             Text::make('Phone'),
 

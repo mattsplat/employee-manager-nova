@@ -4,6 +4,9 @@ use Illuminate\Database\Seeder;
 
 class EmployeeSeeder extends Seeder
 {
+
+    protected $chunk_max = 500;
+
     /**
      * Run the database seeds.
      *
@@ -32,7 +35,7 @@ class EmployeeSeeder extends Seeder
 
         $employees = factory(\App\Employee::class, 1000)->make()->toArray();
 
-        \App\Employee::insert($employees);
+        $this->chunkInsert('App\Employee', $employees);
 
         $titles = [];
         $addresses = [];
@@ -62,10 +65,10 @@ class EmployeeSeeder extends Seeder
 
         };
 
-        \App\JobTitle::insert($titles);
-        \App\Address::insert($addresses);
-        \App\Salary::insert($salaries);
-        \App\EmployeeDepartment::insert($employee_departments);
+        $this->chunkInsert('\App\JobTitle', $titles);
+        $this->chunkInsert('\App\Address', $addresses);
+        $this->chunkInsert('\App\Salary', $salaries);
+        $this->chunkInsert('\App\EmployeeDepartment', $employee_departments);
 
         // create managers
 
@@ -81,5 +84,14 @@ class EmployeeSeeder extends Seeder
 
         }
 
+    }
+
+    public function chunkInsert($model, $data)
+    {
+        $chunks = array_chunk($data,$this->chunk_max);
+        foreach($chunks as $chunk){
+
+            $model::insert($chunk);
+        }
     }
 }

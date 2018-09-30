@@ -9,7 +9,7 @@
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.7.*",
         "laravel/tinker": "^1.0",
-        "laravel/nova": "*"
+        "laravel/nova": "~1.0"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
@@ -58,8 +58,8 @@
     },
     "repositories": [
         {
-            "type": "path",
-            "url": "./nova"
+            "type": "composer",
+            "url": "https://nova.laravel.com"
         }
     ],
     "minimum-stability": "dev",

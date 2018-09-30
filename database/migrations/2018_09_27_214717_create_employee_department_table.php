@@ -34,6 +34,6 @@ class CreateEmployeeDepartmentTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('employee_departments');
+        Schema::dropIfExists('employee_department');
     }
 }

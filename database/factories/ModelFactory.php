@@ -14,8 +14,22 @@ $factory->define(App\Employee::class, function (Faker $faker) {
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
         'phone' => $faker->phoneNumber,
-        'dob' => now()->subMonths(rand(18*12, 18*64))->subDays(rand(0,30)),
+        'dob' => now()->subMonths(rand(18*12, 12*64))->subDays(rand(0,30)),
         'gender' => rand(0,1)? 'M': 'F',
 
     ];
+});
+
+$factory->define('App\Address', function(Faker $faker){
+
+    return [
+
+        'address_line_1' => $faker->address,
+        'city' => $faker->city,
+        'state' => $faker->state,
+        'postal_code' => $faker->postcode,
+        'country' => 'US',
+        'employee_id' => \App\Employee::doesnthave('address')->first(),
+    ];
+
 });

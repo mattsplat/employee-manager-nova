@@ -8,6 +8,10 @@ class Employee extends Model
 {
     protected $guarded = [];
 
+    protected $casts = [
+        'dob' => 'date'
+    ];
+
     public function title()
     {
         return $this->hasOne(JobTitle::class);

@@ -17,11 +17,11 @@ class CreateAddressesTable extends Migration
             $table->increments('id');
 
             $table->string('address_line_1');
-            $table->string('address_line_2');
+            $table->string('address_line_2')->nullable();
             $table->string('city');
             $table->string('state');
             $table->string('postal_code');
-            $table->string('country');
+            $table->string('country')->nullable();
 
             $table->unsignedInteger('employee_id')->index();
             $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');

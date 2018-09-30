@@ -108,7 +108,7 @@ class Employee extends Resource
 
             BelongsToMany::make('Departments'),
 
-            HasMany::make('Deparment Manager'),
+            HasMany::make('Deparment Manager', 'managers', DepartmentManager::class),
 
         ];
     }

@@ -56,7 +56,7 @@ class EmployeeSeeder extends Seeder
             ];
 
             // title
-            $title[] = [
+            $titles[] = [
                 'name' => array_rand($titles_array),
                 'employee_id' => $employee->id
             ];

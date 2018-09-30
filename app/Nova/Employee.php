@@ -99,8 +99,10 @@ class Employee extends Resource
 
             Trix::make('Bio'),
 
-            Image::make('Image')
-                ->disk('local'),
+            Avatar::make('Image')
+                ->disk('local')
+                ->path('photos')
+                ->prunable(),
 
             HasOne::make('Address'),
             HasOne::make('Salary'),

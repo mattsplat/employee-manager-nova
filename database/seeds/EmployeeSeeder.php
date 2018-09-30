@@ -20,6 +20,7 @@ class EmployeeSeeder extends Seeder
             'Marketing',
             'Executive'
         ];
+        $titles_array = \App\JobTitle::$titles;
 
 
         foreach ($departments as $department){
@@ -52,10 +53,10 @@ class EmployeeSeeder extends Seeder
             ];
 
             // title
-            $title[] = \App\JobTitle::make([
-                'name' => array_rand(\App\JobTitle::$titles),
+            $title[] = [
+                'name' => array_rand($titles_array),
                 'employee_id' => $employee->id
-            ]);
+            ];
 
             $addresses[] = factory('App\Address')->make(['employee_id' => $employee->id])->toArray();
 

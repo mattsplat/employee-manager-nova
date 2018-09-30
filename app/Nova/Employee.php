@@ -4,9 +4,11 @@ namespace App\Nova;
 
 use App\Nova\Filters\EmployeeAge;
 use App\Nova\Filters\EmployeeGender;
+use App\Nova\Metrics\NewEmployees;
 use Laravel\Nova\Fields\Avatar;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
@@ -59,6 +61,10 @@ class Employee extends Resource
 
             ID::make()->sortable(),
 
+            Date::make('Hire Date', 'created_at')
+                ->format('M/D/Y')
+                ->sortable(),
+
             Text::make('Name')
                 ->sortable()
                 ->rules('required', 'max:255'),
@@ -77,20 +83,23 @@ class Employee extends Resource
                     ])
                 ->sortable(),
 
-            Text::make('Age', 'dob')->resolveUsing(function ($dob) {
+            Text::make('Age', 'dob')
+                ->resolveUsing(function ($dob) {
 
-                return $dob->diffInYears(now());
+                    return $dob->diffInYears(now());
 
-            })
+                })
                 ->sortable()
                 ->hideWhenUpdating()
                 ->hideWhenCreating(),
 
-            Text::make('Phone'),
+            Text::make('Phone')
+                ->hideFromIndex(),
 
             Trix::make('Bio'),
 
-            Avatar::make('Image')->disk('local'),
+            Image::make('Image')
+                ->disk('local'),
 
             HasOne::make('Address'),
             HasOne::make('Salary'),
@@ -98,6 +107,8 @@ class Employee extends Resource
 
 
             BelongsToMany::make('Departments'),
+
+            HasMany::make('Deparment Manager'),
 
         ];
     }
@@ -110,7 +121,9 @@ class Employee extends Resource
      */
     public function cards(Request $request)
     {
-        return [];
+        return [
+            new NewEmployees(),
+        ];
     }
 
     /**

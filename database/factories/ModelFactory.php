@@ -17,6 +17,7 @@ $factory->define(App\Employee::class, function (Faker $faker) {
         'phone' => $faker->phoneNumber,
         'dob' => now()->subMonths(rand(18*12, 12*64))->subDays(rand(0,30)),
         'gender' => $gender == 'male'? 'M' : 'F',
+        'created_at' => now()->subMonths(rand(1, 12*10))
 
     ];
 });

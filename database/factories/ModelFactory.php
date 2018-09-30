@@ -10,12 +10,13 @@ $factory->define(\App\Department::class, function (Faker $faker) {
 
 $factory->define(App\Employee::class, function (Faker $faker) {
 
+    $gender = rand(0,1)? 'male': 'female';
     return [
-        'name' => $faker->name,
+        'name' => $faker->name($gender),
         'email' => $faker->unique()->safeEmail,
         'phone' => $faker->phoneNumber,
         'dob' => now()->subMonths(rand(18*12, 12*64))->subDays(rand(0,30)),
-        'gender' => rand(0,1)? 'M': 'F',
+        'gender' => $gender == 'male'? 'M' : 'F',
 
     ];
 });

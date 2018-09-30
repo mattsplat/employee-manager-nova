@@ -2,6 +2,8 @@
 
 namespace App\Nova;
 
+use App\Nova\Filters\EmployeeAge;
+use App\Nova\Filters\EmployeeGender;
 use Laravel\Nova\Fields\Avatar;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Date;
@@ -10,6 +12,7 @@ use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\Trix;
@@ -18,7 +21,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 class Employee extends Resource
 {
 
-    public static $with = ['salary', 'address'];
+    public static $with = ['salary', 'address', 'departments', 'address', 'title'];
 
     /**
      * The model the resource corresponds to.
@@ -66,11 +69,20 @@ class Employee extends Resource
             Date::make('Date of Birth', 'dob')->format('M/D/Y')
                 ->sortable(),
 
+            Select::make('Gender')
+                ->options(
+                    [
+                        'M' => 'Male',
+                        'F' => 'Female'
+                    ])
+                ->sortable(),
+
             Text::make('Age', 'dob')->resolveUsing(function ($dob) {
 
                 return $dob->diffInYears(now());
 
             })
+                ->sortable()
                 ->hideWhenUpdating()
                 ->hideWhenCreating(),
 
@@ -78,7 +90,7 @@ class Employee extends Resource
 
             Trix::make('Bio'),
 
-            Avatar::make('Image')->disk('public'),
+            Avatar::make('Image')->disk('local'),
 
             HasOne::make('Address'),
             HasOne::make('Salary'),
@@ -109,7 +121,10 @@ class Employee extends Resource
      */
     public function filters(Request $request)
     {
-        return [];
+        return [
+            new EmployeeAge(),
+            new EmployeeGender,
+        ];
     }
 
     /**

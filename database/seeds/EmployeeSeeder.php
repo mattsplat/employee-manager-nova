@@ -21,6 +21,7 @@ class EmployeeSeeder extends Seeder
             'Executive'
         ];
 
+
         foreach ($departments as $department){
             \App\Department::create([
                 'name' => $department
@@ -45,9 +46,11 @@ class EmployeeSeeder extends Seeder
 
             // title
             \App\JobTitle::create([
-                'name' => 'director',
+                'name' => array_rand(\App\JobTitle::$titles),
                 'employee_id' => $employee->id
             ]);
+
+            factory('App\Address')->create(['employee_id' => $employee->id]);
         });
 
         // create managers

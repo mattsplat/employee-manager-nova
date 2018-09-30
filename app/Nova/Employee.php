@@ -2,12 +2,24 @@
 
 namespace App\Nova;
 
+use Laravel\Nova\Fields\Avatar;
+use Laravel\Nova\Fields\BelongsToMany;
+use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Image;
+use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Textarea;
+use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Employee extends Resource
 {
+
+    public static $with = ['salary', 'address'];
+
     /**
      * The model the resource corresponds to.
      *
@@ -20,7 +32,7 @@ class Employee extends Resource
      *
      * @var string
      */
-    public static $title = 'id';
+    public static $title = 'name';
 
     /**
      * The columns that should be searched.
@@ -29,6 +41,7 @@ class Employee extends Resource
      */
     public static $search = [
         'id',
+        'name'
     ];
 
     /**
@@ -40,7 +53,35 @@ class Employee extends Resource
     public function fields(Request $request)
     {
         return [
+
             ID::make()->sortable(),
+
+            Text::make('Name')->sortable(),
+
+            Text::make('Email')->sortable(),
+
+            Date::make('Date of Birth', 'dob')->format('M/D/Y')->sortable(),
+
+            Text::make('Age', function(){
+
+                return optional($this->dob)
+                    ->diffInYears(now());
+
+            }),
+
+            Text::make('Phone'),
+
+            Trix::make('Bio'),
+
+            Avatar::make('Image')->disk('public'),
+
+            HasOne::make('Address'),
+            HasOne::make('Salary'),
+            HasOne::make('Job Title', 'title'),
+
+
+            BelongsToMany::make('Departments'),
+
         ];
     }
 

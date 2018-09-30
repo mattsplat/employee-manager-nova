@@ -2,8 +2,10 @@
 
 namespace App\Nova;
 
+use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Salary extends Resource
@@ -40,7 +42,12 @@ class Salary extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make()->sortable(),
+            ID::make()->sortable()->onlyOnIndex(),
+            Currency::make('amount')->format('%i'),
+
+            Text::make('Employee', function(){
+                return optional($this->employee)->name;
+            }),
         ];
     }
 

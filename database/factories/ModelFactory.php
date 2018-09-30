@@ -19,3 +19,17 @@ $factory->define(App\Employee::class, function (Faker $faker) {
 
     ];
 });
+
+$factory->define('App\Address', function(Faker $faker){
+
+    return [
+
+        'address_line_1' => $faker->address,
+        'city' => $faker->city,
+        'state' => $faker->state,
+        'postal_code' => $faker->postcode,
+        'country' => 'US',
+        'employee_id' => \App\Employee::doesnthave('address')->first(),
+    ];
+
+});

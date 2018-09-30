@@ -2,12 +2,21 @@
 
 namespace App\Nova;
 
+use Laravel\Nova\Fields\BelongsToMany;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Department extends Resource
 {
+
+    public static $with = [
+        'employees',
+        'managers'
+    ];
     /**
      * The model the resource corresponds to.
      *
@@ -20,7 +29,7 @@ class Department extends Resource
      *
      * @var string
      */
-    public static $title = 'id';
+    public static $title = 'name';
 
     /**
      * The columns that should be searched.
@@ -41,6 +50,15 @@ class Department extends Resource
     {
         return [
             ID::make()->sortable(),
+            Text::make('Name')->sortable(),
+
+            Number::make('Total Employees', function(){
+                return optional($this->employees)->count();
+            }),
+
+            BelongsToMany::make('Employees')->searchable(),
+            BelongsToMany::make('DepartmentManager', 'managers')
+
         ];
     }
 

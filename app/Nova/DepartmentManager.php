@@ -2,8 +2,12 @@
 
 namespace App\Nova;
 
+use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class DepartmentManager extends Resource
@@ -14,6 +18,8 @@ class DepartmentManager extends Resource
      * @var string
      */
     public static $model = 'App\DepartmentManager';
+
+
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -41,6 +47,16 @@ class DepartmentManager extends Resource
     {
         return [
             ID::make()->sortable(),
+            Select::make('Manager Name', function(){
+               return optional($this->employee)->name ;
+            }),
+            Text::make('Department Name', function(){
+                return optional($this->department)->name ;
+            }),
+
+            HasOne::make('Department'),
+            HasOne::make('Employee')
+
         ];
     }
 

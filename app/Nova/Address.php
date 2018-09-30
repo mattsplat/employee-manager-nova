@@ -2,8 +2,12 @@
 
 namespace App\Nova;
 
+use Illuminate\Support\Facades\DB;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Place;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Address extends Resource
@@ -20,7 +24,7 @@ class Address extends Resource
      *
      * @var string
      */
-    public static $title = 'id';
+    public static $title = 'address_line_1';
 
     /**
      * The columns that should be searched.
@@ -29,6 +33,9 @@ class Address extends Resource
      */
     public static $search = [
         'id',
+        'address_line_1',
+        'city',
+
     ];
 
     /**
@@ -41,6 +48,18 @@ class Address extends Resource
     {
         return [
             ID::make()->sortable(),
+            Place::make('Address Line 1')->countries(['US']),
+            Text::make('Address Line 2'),
+            Text::make('City'),
+            Text::make('State'),
+            Text::make('Postal Code'),
+            Text::make('Country'),
+
+            BelongsTo::make('Employee')->searchable()
+
+
+
+
         ];
     }
 

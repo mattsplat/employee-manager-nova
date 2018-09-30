@@ -27,6 +27,7 @@ $factory->define('App\Address', function(Faker $faker){
     return [
 
         'address_line_1' => $faker->address,
+        'address_line_2' => null,
         'city' => $faker->city,
         'state' => $faker->state,
         'postal_code' => $faker->postcode,

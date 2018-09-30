@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use App\Nova\Filters\EmployeeAge;
 use App\Nova\Filters\EmployeeGender;
+use App\Nova\Metrics\EmployeesByYears;
 use App\Nova\Metrics\NewEmployees;
 use Laravel\Nova\Fields\Avatar;
 use Laravel\Nova\Fields\BelongsToMany;
@@ -98,8 +99,10 @@ class Employee extends Resource
 
             Trix::make('Bio'),
 
-            Image::make('Image')
-                ->disk('local'),
+            Avatar::make('Image')
+                ->disk('local')
+                ->path('photos')
+                ->prunable(),
 
             HasOne::make('Address'),
             HasOne::make('Salary'),
@@ -108,7 +111,7 @@ class Employee extends Resource
 
             BelongsToMany::make('Departments'),
 
-            HasMany::make('Deparment Manager'),
+            HasMany::make('Deparment Manager', 'managers', DepartmentManager::class),
 
         ];
     }
@@ -123,6 +126,7 @@ class Employee extends Resource
     {
         return [
             new NewEmployees(),
+            new EmployeesByYears(),
         ];
     }
 

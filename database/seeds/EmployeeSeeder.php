@@ -47,7 +47,7 @@ class EmployeeSeeder extends Seeder
 
             // salary
             $salaries[] = [
-                'amount' => rand(3,20)*10000,
+                'amount' => rand(30,300)*1000,
                 'employee_id' => $employee->id
             ];
 

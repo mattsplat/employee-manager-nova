@@ -29,29 +29,42 @@ class EmployeeSeeder extends Seeder
         }
         $departments = \App\Department::get();
 
-        $employees = factory(\App\Employee::class, 1000)->create();
+        $employees = factory(\App\Employee::class, 1000)->make()->toArray();
 
-        $employees->each(function ($employee){
+        \App\Employee::insert($employees);
+
+        $titles = [];
+        $addresses = [];
+        $salaries = [];
+        $employee_departments = [];
+
+        foreach(\App\Employee::get() as $employee){
             // create employee departments
-            \App\EmployeeDepartment::create([
+            $employee_departments[] = [
                 'department_id' => rand(1,7),
                 'employee_id' => $employee->id
-            ]);
+            ];
 
             // salary
-            App\Salary::create([
+            $salaries[] = [
                 'amount' => rand(3,20)*10000,
                 'employee_id' => $employee->id
-            ]);
+            ];
 
             // title
-            \App\JobTitle::create([
+            $title[] = \App\JobTitle::make([
                 'name' => array_rand(\App\JobTitle::$titles),
                 'employee_id' => $employee->id
             ]);
 
-            factory('App\Address')->create(['employee_id' => $employee->id]);
-        });
+            $addresses[] = factory('App\Address')->make(['employee_id' => $employee->id])->toArray();
+
+        };
+
+        \App\JobTitle::insert($titles);
+        \App\Address::insert($addresses);
+        \App\Salary::insert($salaries);
+        \App\EmployeeDepartment::insert($employee_departments);
 
         // create managers
 

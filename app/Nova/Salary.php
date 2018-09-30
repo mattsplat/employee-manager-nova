@@ -36,25 +36,27 @@ class Salary extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function fields(Request $request)
     {
         return [
             ID::make()->sortable()->onlyOnIndex(),
-            Currency::make('amount')->format('%i'),
+            Currency::make('amount')->format('$%i'),
 
-            Text::make('Employee', function(){
-                return optional($this->employee)->name;
-            }),
+            Text::make('Employee')->resolveUsing(function ($employee) {
+                return $employee->name;
+            })
+                ->hideWhenCreating()
+                ->hideWhenUpdating(),
         ];
     }
 
     /**
      * Get the cards available for the request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function cards(Request $request)
@@ -65,7 +67,7 @@ class Salary extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function filters(Request $request)
@@ -76,7 +78,7 @@ class Salary extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function lenses(Request $request)
@@ -87,7 +89,7 @@ class Salary extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function actions(Request $request)

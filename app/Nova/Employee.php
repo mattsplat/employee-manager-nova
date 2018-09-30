@@ -47,7 +47,7 @@ class Employee extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function fields(Request $request)
@@ -56,17 +56,23 @@ class Employee extends Resource
 
             ID::make()->sortable(),
 
-            Text::make('Name')->sortable(),
+            Text::make('Name')
+                ->sortable()
+                ->rules('required', 'max:255'),
 
-            Text::make('Email')->sortable(),
+            Text::make('Email')
+                ->sortable(),
 
-            Date::make('Date of Birth', 'dob')->format('M/D/Y')->sortable(),
+            Date::make('Date of Birth', 'dob')->format('M/D/Y')
+                ->sortable(),
 
-            Text::make('Age', 'dob')->resolveUsing(function($dob){
+            Text::make('Age', 'dob')->resolveUsing(function ($dob) {
 
                 return $dob->diffInYears(now());
 
-            })->hideWhenUpdating()->hideWhenCreating(),
+            })
+                ->hideWhenUpdating()
+                ->hideWhenCreating(),
 
             Text::make('Phone'),
 
@@ -87,7 +93,7 @@ class Employee extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function cards(Request $request)
@@ -98,7 +104,7 @@ class Employee extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function filters(Request $request)
@@ -109,7 +115,7 @@ class Employee extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function lenses(Request $request)
@@ -120,7 +126,7 @@ class Employee extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function actions(Request $request)

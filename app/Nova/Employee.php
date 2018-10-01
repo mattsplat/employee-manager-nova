@@ -6,6 +6,7 @@ use App\Nova\Filters\EmployeeAge;
 use App\Nova\Filters\EmployeeGender;
 use App\Nova\Metrics\EmployeesByYears;
 use App\Nova\Metrics\NewEmployees;
+use Dniccum\PhoneNumber\PhoneNumber;
 use Laravel\Nova\Fields\Avatar;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Date;
@@ -20,6 +21,7 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Maatwebsite\LaravelNovaExcel\Actions\DownloadExcel;
 
 class Employee extends Resource
 {
@@ -94,7 +96,7 @@ class Employee extends Resource
                 ->hideWhenUpdating()
                 ->hideWhenCreating(),
 
-            Text::make('Phone')
+            PhoneNumber::make('Phone')
                 ->hideFromIndex(),
 
             Trix::make('Bio'),
@@ -163,6 +165,9 @@ class Employee extends Resource
      */
     public function actions(Request $request)
     {
-        return [];
+        return [
+            (new DownloadExcel())
+                ->withHeadings(),
+        ];
     }
 }

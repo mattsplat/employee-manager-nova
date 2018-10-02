@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use App\Nova\Filters\EmployeeAge;
 use App\Nova\Filters\EmployeeGender;
+use App\Nova\Lenses\OnePercenters;
 use App\Nova\Metrics\EmployeesByYears;
 use App\Nova\Metrics\NewEmployees;
 use Dniccum\PhoneNumber\PhoneNumber;
@@ -21,6 +22,7 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Maatwebsite\Excel\Excel;
 use Maatwebsite\LaravelNovaExcel\Actions\DownloadExcel;
 
 class Employee extends Resource
@@ -103,7 +105,7 @@ class Employee extends Resource
 
             Avatar::make('Image')
                 ->disk('local')
-                ->path('photos')
+                ->path('/public/photos')
                 ->prunable(),
 
             HasOne::make('Address'),
@@ -154,7 +156,9 @@ class Employee extends Resource
      */
     public function lenses(Request $request)
     {
-        return [];
+        return [
+            new OnePercenters(),
+        ];
     }
 
     /**
@@ -167,7 +171,8 @@ class Employee extends Resource
     {
         return [
             (new DownloadExcel())
-                ->withHeadings(),
+                ->withHeadings()
+                ->withWriterType(Excel::CSV),
         ];
     }
 }

@@ -14,7 +14,7 @@ $factory->define(App\Employee::class, function (Faker $faker) {
     return [
         'name' => $faker->name($gender),
         'email' => $faker->unique()->safeEmail,
-        'phone' => $faker->phoneNumber,
+        'phone' => '('.rand(100,999).')'.rand(100,999).'-'.rand(1000,9999),
         'dob' => now()->subMonths(rand(18*12, 12*64))->subDays(rand(0,30)),
         'gender' => $gender == 'male'? 'M' : 'F',
         'created_at' => now()->subMonths(rand(1, 12*10))

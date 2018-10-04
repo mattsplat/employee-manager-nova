@@ -19,6 +19,8 @@ class DepartmentManager extends Resource
      */
     public static $model = 'App\DepartmentManager';
 
+    public static $displayInNavigation = false;
+
 
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
@@ -49,15 +50,9 @@ class DepartmentManager extends Resource
     {
         return [
             ID::make()->sortable(),
-            Select::make('Manager Name', function(){
-               return optional($this->employee)->name ;
-            }),
-            Text::make('Department Name', function(){
-                return optional($this->department)->name ;
-            }),
 
-            HasOne::make('Department'),
-            HasOne::make('Employee')
+            BelongsTo::make('Department', 'department', Department::class),
+            BelongsTo::make('Employee')->searchable(),
 
         ];
     }

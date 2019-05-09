@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
@@ -45,11 +46,7 @@ class Salary extends Resource
             ID::make()->sortable()->onlyOnIndex(),
             Currency::make('amount')->format('$%i'),
 
-            Text::make('Employee')->resolveUsing(function ($employee) {
-                return $employee->name;
-            })
-                ->hideWhenCreating()
-                ->hideWhenUpdating(),
+            BelongsTo::make('Employee', 'employee'),
         ];
     }
 

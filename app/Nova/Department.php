@@ -56,7 +56,8 @@ class Department extends Resource
                 return optional($this->employees)->count();
             }),
 
-            BelongsToMany::make('Employees')->searchable(),
+            BelongsToMany::make('Employees')
+                ->searchable(),
             BelongsToMany::make('DepartmentManager', 'managers')
 
         ];

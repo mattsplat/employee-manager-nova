@@ -101,7 +101,7 @@ class Employee extends Resource
             PhoneNumber::make('Phone')
                 ->hideFromIndex(),
 
-            Trix::make('Bio'),
+            Textarea::make('Bio')->limit(10),
 
             Avatar::make('Image')
                 ->disk('local')
